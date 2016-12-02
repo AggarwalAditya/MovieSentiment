@@ -69,13 +69,6 @@ word_features= all_words.most_common(2000)
 featuresets = [(document_features(d), c) for (d, c) in documents]
 train_set, test_set = featuresets[100:], featuresets[:100]
 classifier = nltk.NaiveBayesClassifier.train(train_set)
-# save_classifier = open("movie_review_classifier.pickle", "wb")
-# pickle.dump(classifier, save_classifier)
-# save_classifier.close()
-
-# open_file = open("movie_review_classifier.pickle", "rb")
-# classifier = pickle.load(open_file)
-# open_file.close()
 
 @app.route('/movie',methods = ['POST', 'GET'])
 def login():
@@ -85,12 +78,8 @@ def login():
       url=give_me_the_url(movie_name)
       article=crawl_from_url(url)
 
-      #var2='''terrible. horrible . pathetic. '''
-
-    #   print(classifier.classify(document_features(nltk.word_tokenize(var2))))
-
-      #return str(classifier.classify(document_features(nltk.word_tokenize(article))))
-      return str(article)
+      return str(classifier.classify(document_features(nltk.word_tokenize(article))))
+      
    else:
        url = give_me_the_url("piku")
        article = crawl_from_url(url)
@@ -101,4 +90,4 @@ def login():
 
 
 if __name__ == '__main__':
-   app.run()
+   app.run(host="0.0.0.0")
